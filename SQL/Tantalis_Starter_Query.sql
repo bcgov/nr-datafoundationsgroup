@@ -40,6 +40,8 @@ from
        ta.CITY,
        re.REGION_CDE,
        re.NAME,
+    row_number()oveR(partition by dt.DISPOSITION_TRANSACTION_SID order by nvl(ds.EXPIRY_DAT, to_date('2199-01-01','YYYY-MM-DD')) desc) status_rnk_reverse,
+	
     case when to_char(dt.ENTERED_DAT, 'YYYY') = '1111' then null else dt.COMMENCEMENT_DAT - dt.ENTERED_DAT end  as days_btw_entered_2_comcmnt,
     case when to_char(dt.EXPIRY_DAT,'YYYY') = '9999' then null else dt.EXPIRY_DAT - dt.COMMENCEMENT_DAT end as days_btw_comcmnt_2_expiry,
     case when to_char(dt.RECEIVED_DAT, 'YYYY') = '1111' then null else dt.COMMENCEMENT_DAT - dt.RECEIVED_DAT  end as days_btw_recvd_2_comcmnt,
