@@ -70,7 +70,8 @@ from
     -- left join WHSE_TANTALIS.TA_RESTRICTIONS re on (re.CODE_CHR = ) --not sure the fit*/
     left join WHSE_TANTALIS.TA_AVAILABLE_SUBPURPOSES asp on (asp.PURPOSE_SID = dt.PURPOSE_SID and asp.SUBPURPOSE_SID = dt.SUBPURPOSE_SID) --662092
 )
-where rownum<200
+where status_rnk_reverse =1 
+and rownum<200
 ;
 
 
