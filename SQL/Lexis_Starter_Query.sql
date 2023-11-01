@@ -58,7 +58,7 @@ ea.APPLICATION_NUMBER
   --spatial
   left join EXPORT_SCALE_DETAIL  sd 			on (pd.EXPORT_PERMIT_DETAIL_NUMBER = sd.Export_scale_detail_id)
   left join HAULING_AUTHORITY  hla 				on (sd.timber_mark = hla.timber_mark)
-  left join HARVESTING_HAULING_XREF hax 		on (hax.timber_mark = ha.timber_mark)
+  left join HARVESTING_HAULING_XREF hax 		on (hax.timber_mark = ha.timber_mark and hax.primary_mark_ind = ‘Y’ )
   left join HARVESTING_AUTHORITY_GEOM hgm 		on (hgm.hva_skey = hax.hva_skey)
   left join HARVESTING_AUTHORITY haa 			on (haa.hva= hax.hva_skey)
 ;
