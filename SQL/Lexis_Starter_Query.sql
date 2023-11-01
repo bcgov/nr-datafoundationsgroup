@@ -1,7 +1,64 @@
-Select count(*) from export_permit_detail pd 
-left join export_scale_detail sd on (sd.export_detail_permit_number = pd.export_detail_permit_number)
-left join export_grade_code gc on (gc.export_grade_code = pd.export_grade_code)
-left join export_species_code sc on (sc.export_species_code = pd.export_species_code)
-left join hauling_authority ha on (ha.timber_mark = sd.timber_mark)
-left join export_exemption ee on (ee.exemption_number = pd.exemption_number)
+Select 
+pd.EXPORT_PERMIT_DETAIL_NUMBER	
+,pd.DESTINATION_COMPANY_NAME	
+,pd.TRANSPORT_NAME	
+,pd.ESTIMATED_SHIPPING_DATE	
+,pd.OTHER_PORT_OF_EXPORT	
+,pd.APPLICATION_DATE	
+,pd.RECEIVED_DATE	
+,pd.EXPORT_PERMIT_ISSUE_DATE	
+,pd.RECEIPT_NUMBER	
+,pd.EXPIRY_DATE	
+,pd.PERMIT_VOLUME	
+,pd.NUMBER_OF_PIECES	
+,pd.FEE_IN_LIEU_VOLUME	
+,pd.FEDERAL_PERMIT_NUMBER	
+,pd.REMARKS	
+,pd.CLIENT_NUMBER	
+,pd.CLIENT_LOCN_CODE
+,pd.EXEMPTION_NUMBER	
+,pd.ORG_UNIT_NO	
+,pd.EXPORT_SCALE_METHOD_CODE
+,pd.EXPORT_TRANSPORT_TYPE_CODE
+,pd.EXPORT_PORT_OF_EXPORT_CODE
+,pd.EXPORT_PERMIT_STATUS_CODE	
+,psc.description as EXPORT_PERMIT_STATUS_desc
+,pd.EXPORT_COUNTRY_CODE	
+,pd.EXPORT_GROWTH_TYPE_CODE
+
+,ee.EXEMPTION_NUMBER	
+,ee.APPROVED_VOLUME	
+,ee.APPROVAL_DATE	
+,ee.EXPIRY_DATE	
+,ee.OTHER_CONDITIONS	
+,ee.EXPORT_EXEMPTION_TYPE_CODE	
+,etc.DESCRIPTION as EXPORT_EXEMPTION_TYPE_desc
+,ee.EXPORT_EXEMPTION_STATUS_CODE
+,esc.description as EXPORT_EXEMPTION_STATUS_desc
+
+ea.APPLICATION_NUMBER
+,ea.RECEIVED_DATE
+,ea.EXEMPTION_NUMBER
+,ea.EXPORT_APPLICATION_STATUS_CODE	
+,asc.description as EXPORT_APPLICATION_STATUS_desc
+,ep.EXPORT_PACKAGE_STATUS_CODE
+,psc.description as EXPORT_PACKAGE_STATUS_desc
+
+
+ from 
+  EXPORT_PERMIT_DETAIL pd 
+  left join EXPORT_EXEMPTION ee 				on (ee.EXEMPTION_NUMBER = pd.EXEMPTION_NUMBER)
+  left join EXPORT_EXEMPTION_APPLICATION ea 	on (ea.EXEMPTION_NUMBER = ee.EXEMPTION_NUMBER ) -- missing but needed for EXPORT_APPLICATION_STATUS_CODE
+  left join EXPORT_PACKAGE ep 					on (ep.APPLICATION_NUMBER	=ea.APPLICATION_NUMBER)  -- missing but needed for EXPORT_PACKAGE_STATUS_CODE
+  left join EXPORT_APPLICATION_STATUS_CODE asc 	on (asc.EXPORT_APPLICATION_STATUS_CODE = ea.EXPORT_APPLICATION_STATUS_CODE )
+  left join EXPORT_EXEMPTION_STATUS_CODE esc 	on (esc.EXPORT_EXEMPTION_STATUS_CODE = ee.EXPORT_EXEMPTION_STATUS_CODE)
+  left join EXPORT_PERMIT_STATUS_CODE  psc 		on (psc.EXPORT_PERMIT_STATUS_CODE = pd.EXPORT_PERMIT_STATUS_CODE)
+  left join EXPORT_PACKAGE_STATUS_CODE  pasc 	on (pasc.EXPORT_PACKAGE_STATUS_CODE = ep.EXPORT_PACKAGE_STATUS_CODE)
+  left join EXPORT_EXEMPTION_TYPE_CODE  etc 	on (etc.EXPORT_EXEMPTION_TYPE_CODE = ee.EXPORT_EXEMPTION_TYPE_CODE)
+  --spatial
+  left join EXPORT_SCALE_DETAIL  sd 			on (pd.EXPORT_PERMIT_DETAIL_NUMBER = sd.Export_scale_detail_id)
+  left join HAULING_AUTHORITY  hla 				on (sd.timber_mark = hla.timber_mark)
+  left join HARVESTING_HAULING_XREF hax 		on (hax.timber_mark = ha.timber_mark)
+  left join HARVESTING_AUTHORITY_GEOM hgm 		on (hgm.hva_skey = hax.hva_skey)
+  left join HARVESTING_AUTHORITY haa 			on (haa.hva= hax.hva_skey)
 ;
