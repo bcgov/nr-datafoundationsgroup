@@ -71,86 +71,88 @@ FROM WHSE_FOREST_TENURE.FTEN_TENURE_APPLICATION ta
 --D = Dimension
 --The query allows enough granularity to calculate measures such as application and permit counts by date, while allowing roll up by dimensions such as app purpose, status. type, org unit and location
 Select 
-TA.TENURE_APP_ID --F
-,TA.TENURE_APPNAME --F
-,TA.TENURE_APPLICATION_STATE_CODE --F
-,tas.DESCRIPTION as TENURE_APPLICATION_STATE_desc --D
-,TA.TENURE_APPLICATION_TYPE_CODE --F
-,TAC.DESCRIPTION TENURE_APPLICATION_TYPE_DESC --D
-,TA.TENURE_APP_PURP_CODE  --F
-,pc.DESCRIPTION as app_purpose_desc  --D
-,TA.ORG_UNIT_NO --F
-,ou.ORG_UNIT_CODE  --D
-,ou.ORG_UNIT_NAME--D
-,TA.SUBMISSION_ID --F
-,TA.FOREST_FILE_ID --F
-,Ta.decision_date
-,ta.issuance_date
-,ta.CUTTING_PERMIT_ID --FF
-,TA.CLIENT_NUMBER --F
-,fcl.forest_file_client_type_code -- D
-,fct.DESCRIPTION as FILE_CLIENT_TYPE_desc -- D
---,ta.CUT_BLOCK_ID -- why is there only one cut block id --FF
-,TA.CLIENT_LOCN_CODE --F
-,TA.DESCRIPTION --F
-,ta.COMPLETION_DATE --F
-,ta.SUBMISSION_DATE --F
-,tt.TENURE_TERM --FF
-,tt.LEGAL_EFFECTIVE_DT as tt_LEGAL_EFFECTIVE_DT
-,tt.INITIAL_EXPIRY_DT as tt_INITIAL_EXPIRY_Dt
-,tt.CURRENT_EXPIRY_DT
-,tt.TENURE_EXTEND_CNT
-,tt.TENR_EXTEND_RSN_ST
-       
-     ,pf.FILE_TYPE_CODE,
-      pf.FOREST_FILE_ID,
-      pf.FILE_TYPE_CODE,
-		  pf.FILE_STATUS_ST,
-		  pf.FILE_STATUS_DATE,
-		  pf.FOREST_REGION,
-		  pf.MGMT_UNIT_TYPE,
-		  pf.MGMT_UNIT_ID,
-		  pf.BCTS_ORG_UNIT,
-      COALESCE(pf.sb_funded_ind,'N') SB_FUNDED_IND,
-
-      ttn.REPLACED_DATE,
-      ttn.LICENCE_REPLACEABLE_IND,
-      hva.CUTTING_PERMIT_ID,
-      hhx.TIMBER_MARK,
-      hva.HARVESTING_AUTHORITY_ID,
-      hva.HARVEST_AUTH_STATUS_CODE,
-      hva.HARVEST_TYPE_CODE,
-      hva.SALVAGE_TYPE_CODE,
-      hva.ISSUE_DATE,
-      hva.EXPIRY_DATE,
-      hva.EXTEND_DATE,
-      coalesce(hva.EXTEND_DATE,hva.EXPIRY_DATE),
-      hva.CASCADE_SPLIT_CODE,
-      hva.QUOTA_TYPE_CODE,
-      hva.DECIDUOUS_IND,
-      hva.CATASTROPHIC_IND,
-      hva.CROWN_GRANTED_IND,
-      hva.CRUISE_BASED_IND,
-      hva.TENURE_TERM,
-      hva.BCAA_FOLIO_NUMBER,
-      hva.DISTRICT_ADMN_ZONE,
-      hva.STATUS_DATE,
-      hva.HARVEST_AUTH_EXTEND_REAS_CODE,
-      hva.EXTEND_COUNT,
-      haul.MARKING_INSTRUMENT_CODE,
-      haul.MARKING_METHOD_CODE,
-      hva.HARVEST_AREA,
-      hva.LOCATION,
-      hva.MGMT_UNIT_ID,
-      hva.MGMT_UNIT_TYPE_CODE,
-      hva.RETIREMENT_DATE,
-      hva.CROWN_LANDS_REGION_CODE,
-      hva.GEOGRAPHIC_DISTRICT,
-      hva.HIGHER_LEVEL_PLAN_REFERENCE,
-      hva.LICENCE_TO_CUT_CODE,
-      hhx.PRIMARY_MARK_IND,
-      hva.HVA_SKEY
-          
+----Tenure Application
+  TA.TENURE_APP_ID --F
+  ,TA.TENURE_APPNAME --F
+  ,TA.TENURE_APPLICATION_STATE_CODE --F
+  ,tas.DESCRIPTION as TENURE_APPLICATION_STATE_desc --D
+  ,TA.TENURE_APPLICATION_TYPE_CODE --F
+  ,TAC.DESCRIPTION TENURE_APPLICATION_TYPE_DESC --D
+  ,TA.TENURE_APP_PURP_CODE  --F
+  ,pc.DESCRIPTION as app_purpose_desc  --D
+  ,TA.ORG_UNIT_NO --F
+  ,ou.ORG_UNIT_CODE  --D
+  ,ou.ORG_UNIT_NAME--D
+  ,TA.SUBMISSION_ID --F
+  ,TA.FOREST_FILE_ID --F
+  ,Ta.decision_date
+  ,ta.issuance_date
+  ,ta.CUTTING_PERMIT_ID --FF
+  ,TA.CLIENT_NUMBER --F
+  ,fcl.forest_file_client_type_code -- D
+  ,fct.DESCRIPTION as FILE_CLIENT_TYPE_desc -- D
+  --,ta.CUT_BLOCK_ID -- why is there only one cut block id --FF
+  ,TA.CLIENT_LOCN_CODE --F
+  ,TA.DESCRIPTION --F
+  ,ta.COMPLETION_DATE --F
+  ,ta.SUBMISSION_DATE --F
+----TENURE Term
+  ,tt.TENURE_TERM --FF
+  ,tt.LEGAL_EFFECTIVE_DT as tt_LEGAL_EFFECTIVE_DT
+  ,tt.INITIAL_EXPIRY_DT as tt_INITIAL_EXPIRY_Dt
+  ,tt.CURRENT_EXPIRY_DT
+  ,tt.TENURE_EXTEND_CNT
+  ,tt.TENR_EXTEND_RSN_ST
+---- Prov_Forest_Use
+  ,pf.FILE_TYPE_CODE
+  ,pf.FOREST_FILE_ID
+  ,pf.FILE_TYPE_CODE
+  ,pf.FILE_STATUS_ST
+  ,pf.FILE_STATUS_DATE
+  ,pf.FOREST_REGION
+  ,pf.MGMT_UNIT_TYPE
+  ,pf.MGMT_UNIT_ID
+  ,pf.BCTS_ORG_UNIT
+  ,COALESCE(pf.sb_funded_ind,'N') SB_FUNDED_IND
+---- Harvesting Authority
+  ,hva.CUTTING_PERMIT_ID
+  ,hhx.TIMBER_MARK
+  ,hva.HARVESTING_AUTHORITY_ID
+  ,hva.HARVEST_AUTH_STATUS_CODE
+  ,hva.HARVEST_TYPE_CODE
+  ,hva.SALVAGE_TYPE_CODE
+  ,hva.ISSUE_DATE
+  ,hva.EXPIRY_DATE
+  ,hva.EXTEND_DATE
+  ,coalesce(hva.EXTEND_DATE,hva.EXPIRY_DATE)
+  ,hva.CASCADE_SPLIT_CODE
+  ,hva.QUOTA_TYPE_CODE
+  ,hva.DECIDUOUS_IND
+  ,hva.CATASTROPHIC_IND
+  ,hva.CROWN_GRANTED_IND
+  ,hva.CRUISE_BASED_IND
+  ,hva.TENURE_TERM
+  ,hva.BCAA_FOLIO_NUMBER
+  ,hva.DISTRICT_ADMN_ZONE
+  ,hva.STATUS_DATE
+  ,hva.HARVEST_AUTH_EXTEND_REAS_CODE
+  ,hva.EXTEND_COUNT
+  ,haul.MARKING_INSTRUMENT_CODE
+  ,haul.MARKING_METHOD_CODE
+  ,hva.HARVEST_AREA
+  ,hva.LOCATION
+  ,hva.MGMT_UNIT_ID
+  ,hva.MGMT_UNIT_TYPE_CODE
+  ,hva.RETIREMENT_DATE
+  ,hva.CROWN_LANDS_REGION_CODE
+  ,hva.GEOGRAPHIC_DISTRICT
+  ,hva.HIGHER_LEVEL_PLAN_REFERENCE
+  ,hva.LICENCE_TO_CUT_CODE
+  ,hhx.PRIMARY_MARK_IND
+  ,hva.HVA_SKEY
+---- Timber Tenure
+  ,ttn.REPLACED_DATE
+  ,ttn.LICENCE_REPLACEABLE_IND
 -- ,tm.TIMBER_MARK --FF
  --count(*)
 from FTA_Replication.TENURE_APPLICATION ta 
