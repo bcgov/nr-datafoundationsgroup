@@ -51,6 +51,6 @@ left join (select constr.owner,
            on col.table_name = fk.table_name 
           and col.column_name = fk.column_name
           and col.owner = fk.owner
-where tab.owner in ('WHSE_TANTALIS')
-and tab.table_name  in ('TA_DISPOSITION_TRANSACTIONS','TA_DISPOSITIONS')
+where tab.owner in ('THE')
+and tab.table_name LIKE ('Export%') --search for LEXIS tables with EXPORT prefix
 order by 1,2,col.COLUMN_ID;
