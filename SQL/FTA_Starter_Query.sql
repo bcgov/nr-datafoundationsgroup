@@ -150,9 +150,16 @@ Select
   ,hva.LICENCE_TO_CUT_CODE
   ,hhx.PRIMARY_MARK_IND
   ,hva.HVA_SKEY
+  ,hvs.SALE_METHOD_CODE
+  ,hvs.SALE_TYPE_CD
+  ,hvs.PAYMENT_METHOD_CD
+  ,coalesce(hvs.SALVAGE_IND,'N') AS SALVAGE_IND
 ---- Timber Tenure
   ,ttn.REPLACED_DATE
   ,ttn.LICENCE_REPLACEABLE_IND
+  ,extract(days from coalesce(ta.decision_date, now()) - ta.submission_date) as days_to_decision
+  ,extract(days from coalesce(ta.issuance_date, now()) - ta.submission_date) as days_to_issuance
+  ,case when ta.issuance_date is null then 1 else 0 end as active_application
 -- ,tm.TIMBER_MARK --FF
  --count(*)
 from FTA_Replication.TENURE_APPLICATION ta 
